@@ -147,9 +147,9 @@ def drawGrid(data, canvas, grid, showShips):
     for i in range(data["row"]):
         for j in range(data["col"]):
             if (grid[i][j] == SHIP_UNCLICKED):
-                canvas.create_rectangle(j*data["cell-size"],i*data["cell-size"],data["cell-size"]*(j+1),data["cell-size"]*(i+1),fill="yellow")
+                canvas.create_rectangle(j*data["cell_size"],i*data["cell_size"],data["cell_size"]*(j+1),data["cell_size"]*(i+1),fill="yellow")
             else:
-                canvas.create_rectangle(j*data["cell-size"],i*data["cell-size"],data["cell-size"]*(j+1),data["cell-size"]*(i+1),fill="blue")
+                canvas.create_rectangle(j*data["cell_size"],i*data["cell_size"],data["cell_size"]*(j+1),data["cell_size"]*(i+1),fill="blue")
     return
 
 
