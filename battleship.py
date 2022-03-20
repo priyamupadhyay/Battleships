@@ -30,12 +30,14 @@ def makeModel(data):
     data["board-size"]=500
     data["cell_size"]=50
     data["numShips"]=5
-    #boarduser = emptyGrid(data["row"], data["col"])
-    boarduser = test.testGrid()
+    boarduser = emptyGrid(data["row"], data["col"])
+    #boarduser = test.testGrid()
     boardcompu = emptyGrid(data["row"], data["col"])
     boardcompu = addShips(boardcompu, data["numShips"])
     data["boarduser"] = boarduser
     data["boardcompu"] = boardcompu
+    #data["temporaryShip"] = []
+    data["temporaryShip"] = test.testShip()
     return
 
 
@@ -47,6 +49,7 @@ Returns: None
 def makeView(data, userCanvas, compCanvas):
     drawGrid(data,userCanvas,data["boarduser"],showShips=True)
     drawGrid(data,compCanvas,data["boardcompu"],showShips=True)
+    drawShip(data,userCanvas,data["temporaryShip"])
     return
 
 
@@ -163,7 +166,24 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    return
+    (x,y)=ship[0]
+    count = 0
+    lst = []
+    for i in ship:
+        if i[0]<=8:
+            lst.append(i[0])
+    lst.sort()
+    #to find diffrence between the coordinates
+    res = [lst[i + 1] - lst[i] for i in range(len(lst)-1)]
+    #to check for same column
+    for i in ship:
+        if i[1]==y and res[0]==1 and res[1]==1:
+            count += 1
+        else:
+            count -= 1
+    if count == 3:
+        return True
+    return False
 
 
 '''
@@ -172,7 +192,24 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    return
+    (x,y)=ship[0]
+    count = 0
+    lst = []
+    for i in ship:
+        if i[1]<=8:
+            lst.append(i[1])
+    lst.sort()
+    #to find diffrence between the coordinates
+    res = [lst[i + 1] - lst[i] for i in range(len(lst)-1)]
+    #to check for same column
+    for i in ship:
+        if i[0]==x and res[0]==1 and res[1]==1:
+            count += 1
+        else:
+            count -= 1
+    if count == 3:
+        return True
+    return False
 
 
 '''
@@ -181,7 +218,12 @@ Parameters: dict mapping strs to values ; mouse event object
 Returns: list of ints
 '''
 def getClickedCell(data, event):
-    return
+    #lst = []
+    x,y = int(event.x / data["cell_size"]), int(event.y / data["cell_size"])
+    #lst.append(y)
+    #x = int(event.x / data["cell_size"])
+    #lst.append(x)
+    return [y,x]
 
 
 '''
@@ -190,6 +232,9 @@ Parameters: dict mapping strs to values ; Tkinter canvas; 2D list of ints
 Returns: None
 '''
 def drawShip(data, canvas, ship):
+    #ship = test.testShip()
+    for i in ship:
+        canvas.create_rectangle(data["cell_size"]*i[1],data["cell_size"]*i[0],data["cell_size"]*(i[1]+1),data["cell_size"]*(i[0]+1),fill="white")
     return
 
 
@@ -328,6 +373,10 @@ if __name__ == "__main__":
     test.testAddShips()
     test.testMakeModel()
     test.testDrawGrid()
+    test.testIsVertical()
+    test.testIsHorizontal()
+    test.testGetClickedCell()
+    test.testDrawShip()
     
     ## Finally, run the simulation to test it manually ##
     runSimulation(500, 500)
