@@ -163,7 +163,24 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    return
+    (x,y)=ship[0]
+    count = 0
+    lst = []
+    for i in ship:
+        if i[0]<=8:
+            lst.append(i[0])
+    lst.sort()
+    #to find diffrence between the coordinates
+    res = [lst[i + 1] - lst[i] for i in range(len(lst)-1)]
+    #to check for same column
+    for i in ship:
+        if i[1]==y and res[0]==1 and res[1]==1:
+            count += 1
+        else:
+            count -= 1
+    if count == 3:
+        return True
+    return False
 
 
 '''
@@ -172,7 +189,24 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    return
+    (x,y)=ship[0]
+    count = 0
+    lst = []
+    for i in ship:
+        if i[1]<=8:
+            lst.append(i[1])
+    lst.sort()
+    #to find diffrence between the coordinates
+    res = [lst[i + 1] - lst[i] for i in range(len(lst)-1)]
+    #to check for same column
+    for i in ship:
+        if i[0]==x and res[0]==1 and res[1]==1:
+            count += 1
+        else:
+            count -= 1
+    if count == 3:
+        return True
+    return False
 
 
 '''
@@ -328,6 +362,8 @@ if __name__ == "__main__":
     test.testAddShips()
     test.testMakeModel()
     test.testDrawGrid()
+    test.testIsVertical()
+    test.testIsHorizontal()
     
     ## Finally, run the simulation to test it manually ##
     runSimulation(500, 500)
