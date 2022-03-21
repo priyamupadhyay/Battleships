@@ -39,6 +39,7 @@ def makeModel(data):
     #data["temporaryShip"] = test.testShip()
     data["boardcompu"] = boardcompu
     data["userturn"] = 0
+    data["winner"] = None
     return
 
 
@@ -51,6 +52,7 @@ def makeView(data, userCanvas, compCanvas):
     drawGrid(data,userCanvas,data["boarduser"],showShips=True)
     drawGrid(data,compCanvas,data["boardcompu"],showShips=False)
     drawShip(data,userCanvas,data["temporaryShip"])
+    drawGameOver(data,userCanvas)
     return
 
 
@@ -69,6 +71,8 @@ Parameters: dict mapping strs to values ; mouse event object ; 2D list of ints
 Returns: None
 '''
 def mousePressed(data, event, board):
+    if data["winner"] != None:
+        return
     click = getClickedCell(data,event)
     if board == "user":
          clickUserBoard(data,click[0], click[1])
@@ -316,6 +320,8 @@ def updateBoard(data, board, row, col, player):
         board[row][col] = SHIP_CLICKED
     elif board[row][col] == EMPTY_UNCLICKED:
         board[row][col] = EMPTY_CLICKED
+    if isGameOver(board):
+        data["winner"] = player
     return
 
 
@@ -357,6 +363,12 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isGameOver(board):
+    for i in range(len(board[0])):
+        l=len(board[i])
+        for j in range(l):
+            if board[i][j] == SHIP_UNCLICKED:
+                return False
+    return True
     return
 
 
@@ -366,6 +378,10 @@ Parameters: dict mapping strs to values ; Tkinter canvas
 Returns: None
 '''
 def drawGameOver(data, canvas):
+    if data["winner"] == "user":
+        canvas.create_text(250, 80, text="Congratulations, You Won !", fill="black", font=('Helvetica 15 bold'))
+    else:
+        canvas.create_text(250, 80, text="Oh no, You lost !", fill="black", font=('Helvetica 15 bold'))
     return
 
 
@@ -437,6 +453,8 @@ if __name__ == "__main__":
     test.testShipIsValid()
     test.testUpdateBoard()
     test.testGetComputerGuess()
+    test.testIsGameOver()
+    test.testDrawGameOver()
     
     ## Finally, run the simulation to test it manually ##
     runSimulation(500, 500)
