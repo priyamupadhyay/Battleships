@@ -178,7 +178,11 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    (x,y)=ship[0]
+    ship.sort()
+    if (ship[0][1] == ship[1][1] == ship[2][1]) and (ship[0][0] + 1 == ship[1][0] == ship[2][0] - 1):
+        return True
+    return False
+    '''(x,y)=ship[0]
     count = 0
     lst = []
     for i in ship:
@@ -195,7 +199,7 @@ def isVertical(ship):
             count -= 1
     if count == 3:
         return True
-    return False
+    return False'''
 
 
 '''
@@ -204,7 +208,11 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    (x,y)=ship[0]
+    ship.sort()
+    if (ship[0][0] == ship[1][0] == ship[2][0]) and (ship[0][1] + 1 == ship[1][1] == ship[2][1] - 1):
+        return True
+    return False
+    '''(x,y)=ship[0]
     count = 0
     lst = []
     for i in ship:
@@ -221,7 +229,7 @@ def isHorizontal(ship):
             count -= 1
     if count == 3:
         return True
-    return False
+    return False'''
 
 
 '''
@@ -321,6 +329,9 @@ def runGameTurn(data, row, col):
         return
     else:
         updateBoard(data, data["boardcompu"],row,col,"user")
+    i = getComputerGuess(data["boarduser"])
+    updateBoard(data, data["boarduser"], i[0], i[1], "comp")
+
     
 
 
@@ -330,6 +341,13 @@ Parameters: 2D list of ints
 Returns: list of ints
 '''
 def getComputerGuess(board):
+    row = random.randint(0,9)
+    col = random.randint(0,9)
+    while(board[row][col]==EMPTY_CLICKED or board[row][col]==SHIP_CLICKED):
+        row = random.randint(0,9)
+        col = random.randint(0,9)
+    if (board[row][col] == EMPTY_UNCLICKED) or (board[row][col]== SHIP_UNCLICKED):
+        return [row,col]
     return
 
 
@@ -418,7 +436,7 @@ if __name__ == "__main__":
     test.testDrawShip()
     test.testShipIsValid()
     test.testUpdateBoard()
-    
+    test.testGetComputerGuess()
     
     ## Finally, run the simulation to test it manually ##
     runSimulation(500, 500)
