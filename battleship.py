@@ -64,6 +64,8 @@ Parameters: dict mapping strs to values ; key event object
 Returns: None
 '''
 def keyPressed(data, event):
+    if event.keycode == 13:
+        makeModel(data)
     pass
 
 
@@ -184,15 +186,15 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    ship.sort()
+    '''ship.sort()
     if (ship[0][1] == ship[1][1] == ship[2][1]) and (ship[0][0] + 1 == ship[1][0] == ship[2][0] - 1):
         return True
-    return False
-    '''(x,y)=ship[0]
+    return False'''
+    (x,y)=ship[0]
     count = 0
     lst = []
     for i in ship:
-        if i[0]<=8:
+        if i[0]<=9:
             lst.append(i[0])
     lst.sort()
     #to find diffrence between the coordinates
@@ -205,7 +207,7 @@ def isVertical(ship):
             count -= 1
     if count == 3:
         return True
-    return False'''
+    return False
 
 
 '''
@@ -214,15 +216,15 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    ship.sort()
+    '''ship.sort()
     if (ship[0][0] == ship[1][0] == ship[2][0]) and (ship[0][1] + 1 == ship[1][1] == ship[2][1] - 1):
         return True
-    return False
-    '''(x,y)=ship[0]
+    return False'''
+    (x,y)=ship[0]
     count = 0
     lst = []
     for i in ship:
-        if i[1]<=8:
+        if i[1]<=9:
             lst.append(i[1])
     lst.sort()
     #to find diffrence between the coordinates
@@ -235,7 +237,7 @@ def isHorizontal(ship):
             count -= 1
     if count == 3:
         return True
-    return False'''
+    return False
 
 
 '''
@@ -384,10 +386,13 @@ Returns: None
 def drawGameOver(data, canvas):
     if data["winner"] == "user":
         canvas.create_text(250, 80, text="Congratulations, You Won !", fill="black", font=('Helvetica 15 bold'))
+        canvas.create_text(250, 120, text="Click enter to start over again !", fill="black", font=('Helvetica 15 bold'))
     elif data["winner"] == "draw":
         canvas.create_text(250, 80, text="Out of moves, It's a Draw !", fill="black", font=('Helvetica 15 bold'))
+        canvas.create_text(250, 120, text="Click enter to start over again !", fill="black", font=('Helvetica 15 bold'))
     elif data["winner"] == "comp":
         canvas.create_text(250, 80, text="Oh no, You lost !", fill="black", font=('Helvetica 15 bold'))
+        canvas.create_text(250, 120, text="Click enter to start over again !", fill="black", font=('Helvetica 15 bold'))
     return
 
 
