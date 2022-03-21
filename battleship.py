@@ -40,6 +40,8 @@ def makeModel(data):
     data["boardcompu"] = boardcompu
     data["userturn"] = 0
     data["winner"] = None
+    data["maxturns"] = 50
+    data["currentnoofturns"] = 0
     return
 
 
@@ -337,7 +339,9 @@ def runGameTurn(data, row, col):
         updateBoard(data, data["boardcompu"],row,col,"user")
     i = getComputerGuess(data["boarduser"])
     updateBoard(data, data["boarduser"], i[0], i[1], "comp")
-
+    data["currentnoofturns"] += 1
+    if data["currentnoofturns"] == data["maxturns"]:
+        data["winner"] = "draw"
     
 
 
@@ -380,7 +384,9 @@ Returns: None
 def drawGameOver(data, canvas):
     if data["winner"] == "user":
         canvas.create_text(250, 80, text="Congratulations, You Won !", fill="black", font=('Helvetica 15 bold'))
-    else:
+    elif data["winner"] == "draw":
+        canvas.create_text(250, 80, text="Out of moves, It's a Draw !", fill="black", font=('Helvetica 15 bold'))
+    elif data["winner"] == "comp":
         canvas.create_text(250, 80, text="Oh no, You lost !", fill="black", font=('Helvetica 15 bold'))
     return
 
