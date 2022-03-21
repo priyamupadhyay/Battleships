@@ -49,7 +49,7 @@ Returns: None
 '''
 def makeView(data, userCanvas, compCanvas):
     drawGrid(data,userCanvas,data["boarduser"],showShips=True)
-    drawGrid(data,compCanvas,data["boardcompu"],showShips=True)
+    drawGrid(data,compCanvas,data["boardcompu"],showShips=False)
     drawShip(data,userCanvas,data["temporaryShip"])
     return
 
@@ -72,7 +72,9 @@ def mousePressed(data, event, board):
     click = getClickedCell(data,event)
     if board == "user":
          clickUserBoard(data,click[0], click[1])
-    pass
+    else:
+        runGameTurn(data,click[0],click[1])
+    return
 
 #### WEEK 1 ####
 
@@ -157,7 +159,13 @@ def drawGrid(data, canvas, grid, showShips):
         for j in range(data["col"]):
             if (grid[i][j] == SHIP_UNCLICKED):
                 canvas.create_rectangle(j*data["cell_size"],i*data["cell_size"],data["cell_size"]*(j+1),data["cell_size"]*(i+1),fill="yellow")
-            else:
+            if (grid[i][j] == SHIP_UNCLICKED) and showShips == False:
+                canvas.create_rectangle(j*data["cell_size"],i*data["cell_size"],data["cell_size"]*(j+1),data["cell_size"]*(i+1),fill="blue")
+            elif (grid[i][j] == SHIP_CLICKED):
+                canvas.create_rectangle(j*data["cell_size"],i*data["cell_size"],data["cell_size"]*(j+1),data["cell_size"]*(i+1),fill="red")
+            elif (grid[i][j] == EMPTY_CLICKED):
+                canvas.create_rectangle(j*data["cell_size"],i*data["cell_size"],data["cell_size"]*(j+1),data["cell_size"]*(i+1),fill="white")
+            elif (grid[i][j] == EMPTY_UNCLICKED):
                 canvas.create_rectangle(j*data["cell_size"],i*data["cell_size"],data["cell_size"]*(j+1),data["cell_size"]*(i+1),fill="blue")
     return
 
@@ -309,7 +317,11 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def runGameTurn(data, row, col):
-    return
+    if(data["boardcompu"][row][col] == SHIP_CLICKED) or (data["boardcompu"][row][col]==EMPTY_CLICKED):
+        return
+    else:
+        updateBoard(data, data["boardcompu"],row,col,"user")
+    
 
 
 '''
