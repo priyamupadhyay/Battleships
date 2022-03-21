@@ -443,7 +443,7 @@ def runSimulation(w, h):
 
 # This code runs the test cases to check your work
 if __name__ == "__main__":
-    test.testEmptyGrid()
+    '''test.testEmptyGrid()
     test.testCreateShip()
     test.testCheckShip()
     test.testAddShips()
@@ -457,7 +457,7 @@ if __name__ == "__main__":
     test.testUpdateBoard()
     test.testGetComputerGuess()
     test.testIsGameOver()
-    test.testDrawGameOver()
+    test.testDrawGameOver()'''
     
     ## Finally, run the simulation to test it manually ##
     runSimulation(500, 500)
